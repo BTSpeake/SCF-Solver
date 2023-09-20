@@ -29,7 +29,7 @@ int Basis::nShells() const {
 	return _orbShells.size();
 }
 
-const Shell* Basis::getShell(int i) const {
+Shell* Basis::getShell(int i) const {
 	return _orbShells[i];
 }
 
@@ -45,24 +45,57 @@ int Basis::nFunctions() const {
 	else { return _nCar; }
 }
 
+bool Basis::isSpherical() const {
+	return _spherical;
+}
+
 void Basis::createContractedShells(int* funcMap, int* atomMap, int& nShls, double* pExp, double* cc, double* r) {
 	int nPrim = 0;
 	for (int i = 0; i < nShls; i++) {
 		nPrim += funcMap[i];
 	}
 	
-	for (int si = 0; si < nShls; si++) {
-		for (int l = 0; l <= _lmax; l++) {
-			int iVal = 0;
-			int lOffset = l * nPrim;
-			for (int i = 0; i < nShls; i++) {
-				int ri = (i * 3);
-				Shell* shl = new Shell(atomMap[i], l, r[ri], r[ri + 1], r[ri + 2]);
+	for (int l = 0; l <= _lmax; l++) {
+		int iVal = 0;
+		int lOffset = l * nPrim;
+		for (int i = 0; i < nShls; i++) {
+			int ri = (i * 3);
+			Shell* shl = new Shell(atomMap[i], l, r[ri], r[ri + 1], r[ri + 2]);
 
-				for (int j = 0; j < funcMap[i]; j++) {
-					if (std::abs(cc[lOffset + iVal + j]) > 1e-10) {
-						shl->addExponent(pExp[iVal + j], cc[lOffset + iVal + j]);
-					}
+			for (int j = 0; j < funcMap[i]; j++) {
+				if (std::abs(cc[lOffset + iVal + j]) > 1e-10) {
+					shl->addExponent(pExp[iVal + j], cc[lOffset + iVal + j]);
+				}
+			}
+			if (shl->nExponents() > 0) {
+				shl->calculateProperties(_nSph, _nCar);
+				_orbShells.push_back(shl);
+				_nSph += 2 * l + 1;
+				_nCar += (l + 1) * (l + 2) / 2;
+			}
+			else {
+				delete shl;
+			}
+			iVal += funcMap[i];
+		}
+	}
+}
+
+void Basis::createPrimitiveShells(int* funcMap, int* atomMap, int& nShls, double* pExp, double* cc, double* r) {
+	int nPrim = 0;
+	for (int i = 0; i < nShls; i++) {
+		nPrim += funcMap[i];
+	}
+
+	for (int l = 0; l <= _lmax; l++) {
+		int iVal = 0;
+		int lOffset = l * nPrim;
+		for (int i = 0; i < nShls; i++) {
+			int ri = (i * 3);
+			for (int j = 0; j < funcMap[i]; j++) {
+				Shell* shl = new Shell(atomMap[i], l, r[ri], r[ri + 1], r[ri + 2]);
+				if (std::abs(cc[lOffset + iVal + j]) > 1e-10) {
+					shl->addExponent(pExp[iVal + j], cc[lOffset + iVal + j]);
 				}
 				if (shl->nExponents() > 0) {
 					shl->calculateProperties(_nSph, _nCar);
@@ -74,13 +107,9 @@ void Basis::createContractedShells(int* funcMap, int* atomMap, int& nShls, doubl
 					delete shl;
 				}
 			}
-			iVal += funcMap[si];
+			iVal += funcMap[i];
 		}
 	}
-}
-
-void Basis::createPrimitiveShells(int* funcMap, int* atomMap, int& nShls, double* pExp, double* cc, double* r) {
-
 }
 
 void Basis::setC2S() {

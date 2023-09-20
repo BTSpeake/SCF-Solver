@@ -15,7 +15,7 @@ void Shell::addExponent(const double exp, const double cc) {
 	_coefficients.push_back(cc);
 }
 
-unsigned int Shell::getAngularMomentum() const {
+int Shell::getAngularMomentum() const {
 	return _l;
 }
 

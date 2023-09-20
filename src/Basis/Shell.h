@@ -2,6 +2,7 @@
 
 #include "../Utils/Vector3.h"
 #include <vector>
+#include <complex>
 
 class Shell {
 public:
@@ -11,7 +12,7 @@ public:
 	//void setPosition(const double x, const double y, const double z);
 	void addExponent(const double exp, const double cc);
 
-	unsigned int getAngularMomentum() const;
+	int getAngularMomentum() const;
 
 	const std::vector<double>& getExponents() const;
 	const double& getExponent(int i) const;
@@ -32,14 +33,16 @@ public:
 
 	void calculateProperties(int si, int ci);
 
+	std::complex<double> _kpw[3]{ 0.0, 0.0, 0.0 };
+
 private:
 	void calculateGaussianNormal();
 	void calculateCanonicallmn();
 	int dfac(int n);
 
 
-	unsigned int _l;
-	unsigned int _atom; 
+	int _l;
+	int _atom; 
 	int _si, _ci;
 	std::vector<double> _exponents;
 	std::vector<double> _coefficients;

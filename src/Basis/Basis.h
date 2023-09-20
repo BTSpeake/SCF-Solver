@@ -13,11 +13,11 @@ public:
 	Basis& operator=(const Basis&) = delete;
 
 	int nShells() const; 
-	const Shell* getShell(int i) const; 
+	Shell* getShell(int i) const; 
 	int nSpherical() const; 
 	int nCartesian() const; 
 	int nFunctions() const; 
-
+	bool isSpherical() const;
 
 private:
 	void createContractedShells(int* funcMap, int* atomMap, int& nShls, double* pExp, double* cc, double* r);

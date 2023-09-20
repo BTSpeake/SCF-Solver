@@ -1,6 +1,7 @@
 ﻿#include "src/Molecule/Molecule.h"
 #include "src/Basis/Basis.h"
 #include "src/Utils/Vector3.h"
+#include "src/Integrals/Integrals.h"
 
 #include <iostream>
 
@@ -29,13 +30,24 @@ int main()
 		0.0, 0.0, 1.3, 0.0, 0.0, 1.3
 	};
 	
-	Basis bas(funcMap, lmax, atomMap, nShells, pExp, cc, r, true, true);
+	bool contracted = false; 
+	bool spherical = false;
+	Basis bas(funcMap, lmax, atomMap, nShells, pExp, cc, r, contracted, spherical);
 	// Basis input needs generalising to link with mol object and read in from a formatted basis file
 
 	generateMolecule(mol);
 	double nnr = mol.calculateNNRepulsion();
 
+	for (int i = 0; i < bas.nShells(); i++) {
+		std::cout << bas.getShell(i)->getCoefficient(0) << std::endl;
+	}
+
+	Integrals intObj(bas, mol);
+
+
 	std::cout << "NNRep = " << nnr << std::endl;
+	std::cout << "nShells = " << bas.nShells() << std::endl;
+	std::cout << "nBas = " << bas.nFunctions() << std::endl;
 
 
 }
