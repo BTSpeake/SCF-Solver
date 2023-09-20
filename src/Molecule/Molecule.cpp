@@ -27,10 +27,28 @@ void Molecule::addAtom(Atom* atom) {
 	_atoms.push_back(atom);
 }
 
-Vector3& Molecule::getAtomPosition(unsigned int i) const {
+void Molecule::addAtom(unsigned int atN, double x, double y, double z) {
+	Atom* pAtom = new Atom(atN, x, y, z);
+	_atoms.push_back(pAtom);
+}
+
+const Vector3& Molecule::getAtomPosition(unsigned int i) const {
 	return _atoms[i]->getPosition();
 }
 
 unsigned int Molecule::getAtomNumber(unsigned int i) const {
 	return _atoms[i]->getAtomicNumber();
+}
+
+double Molecule::calculateNNRepulsion() const {
+	double nnr = 0.0;
+	for (int i = 0; i < _atoms.size(); i++) {
+		for (int j = (i + 1); j < _atoms.size(); j++) {
+			Vector3 Rij; 
+			Rij = _atoms[i]->getPosition() - _atoms[j]->getPosition();
+			double r = Rij.normal();
+			nnr += _atoms[i]->getAtomicNumber() * _atoms[j]->getAtomicNumber() / r;
+		}
+	}
+	return nnr;
 }

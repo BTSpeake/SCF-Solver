@@ -33,7 +33,9 @@ int main()
 	// Basis input needs generalising to link with mol object and read in from a formatted basis file
 
 	generateMolecule(mol);
+	double nnr = mol.calculateNNRepulsion();
 
+	std::cout << "NNRep = " << nnr << std::endl;
 
 
 }

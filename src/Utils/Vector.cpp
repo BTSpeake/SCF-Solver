@@ -1,5 +1,7 @@
 #include "Vector3.h"
 
+#include <cmath>
+
 Vector3::Vector3()
 	: _x(0.0), _y(0.0), _z(0.0) {}
 
@@ -61,4 +63,12 @@ void Vector3::scalarDivide(const double& s) {
 	_x /= s;
 	_y /= s;
 	_z /= s;
+}
+
+double Vector3::normal() const {
+	double n = 0.0;
+	n += (_x * _x);
+	n += (_y * _y); 
+	n += (_z * _z); 
+	return std::sqrt(n);
 }

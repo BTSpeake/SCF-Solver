@@ -13,6 +13,7 @@ public:
 	Vector3& operator-=(const Vector3& rhs);
 	void scalarMultiply(const double& s);
 	void scalarDivide(const double& s);
+	double normal() const;
 
 private:
 	double _x, _y, _z;
