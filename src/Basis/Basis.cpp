@@ -95,7 +95,7 @@ void Basis::createPrimitiveShells(int* funcMap, int* atomMap, int& nShls, double
 			for (int j = 0; j < funcMap[i]; j++) {
 				Shell* shl = new Shell(atomMap[i], l, r[ri], r[ri + 1], r[ri + 2]);
 				if (std::abs(cc[lOffset + iVal + j]) > 1e-10) {
-					shl->addExponent(pExp[iVal + j], cc[lOffset + iVal + j]);
+					shl->addExponent(pExp[iVal + j], 1.0);
 				}
 				if (shl->nExponents() > 0) {
 					shl->calculateProperties(_nSph, _nCar);

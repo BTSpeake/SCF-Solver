@@ -38,10 +38,6 @@ int main()
 	generateMolecule(mol);
 	double nnr = mol.calculateNNRepulsion();
 
-	for (int i = 0; i < bas.nShells(); i++) {
-		std::cout << bas.getShell(i)->getCoefficient(0) << std::endl;
-	}
-
 	Integrals intObj(bas, mol);
 
 

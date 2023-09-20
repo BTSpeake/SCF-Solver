@@ -20,8 +20,6 @@ ShellPair::ShellPair(Shell* shli, Shell* shlj, bool spherical)
 	else {
 		calculateContracted();
 	}
-
-	std::cout << sa[0] << ", " << sb[0] << std::endl;
 }
 
 ShellPair::~ShellPair() {
