@@ -1,22 +1,46 @@
 ﻿#include "src/Molecule/Molecule.h"
+#include "src/Basis/Basis.h"
 #include "src/Utils/Vector3.h"
 
 #include <iostream>
+
+void generateMolecule(Molecule& mol);
 
 int main()
 {
 	std::cout << "...SCF Solver..." << std::endl;
 
 	Molecule mol;
-	Vector3 v1;
-	Vector3 v2;
+	
+	int funcMap[4] = { 2, 1, 2, 1 };
+	int atomMap[4] = { 1, 1, 2, 2 };
+	int lmax = 0;
+	int nShells = 4;
+	double pExp[6] = {
+		5.44717800E+00,  8.24547000E-01,  1.83192000E-01,  5.44717800E+00,  8.24547000E-01,
+		1.83192000E-01
+	};
+	double cc[6] = {
+		1.56284981E-01,  9.04690888E-01,  1.00000000E+00,  1.56284981E-01,  9.04690888E-01,
+		1.00000000E+00
+	};
+	double r[12] = {
+		0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+		0.0, 0.0, 1.3, 0.0, 0.0, 1.3
+	};
+	
+	Basis bas(funcMap, lmax, atomMap, nShells, pExp, cc, r, true, true);
+	// Basis input needs generalising to link with mol object and read in from a formatted basis file
 
-	mol.addAtom("HE", v1);
-	mol.addAtom(8, v2);
+	generateMolecule(mol);
 
-	std::cout << "Molecule has " << mol.getNumberOfAtoms() << " atoms" << std::endl;
 
-	std::cout << "Atom 1: " << mol.getAtomNumber(0) << std::endl;
-	std::cout << "Position: " << mol.getAtomPosition(0)[0] << " " << mol.getAtomPosition(0)[1] << std::endl;
 
+}
+
+
+void generateMolecule(Molecule& mol) {
+	// Create a H2 atom 
+	mol.addAtom(1, 0.0, 0.0, 0.0);
+	mol.addAtom(1, 0.0, 0.0, 1.3);
 }
