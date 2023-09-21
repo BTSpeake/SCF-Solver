@@ -42,7 +42,7 @@ private:
 
 
 	int _l;
-	int _atom; 
+	int _atom;  
 	int _si, _ci;
 	std::vector<double> _exponents;
 	std::vector<double> _coefficients;

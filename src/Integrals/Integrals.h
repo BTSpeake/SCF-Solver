@@ -12,6 +12,7 @@ public:
 	Integrals(const Basis& bas, const Molecule& mol);
 	~Integrals();
 private:
+	int _nBas = 0;
 	int _nS = 0; 
 	int _nK = 0;
 	int _nN = 0;
@@ -21,4 +22,5 @@ private:
 
 	void calculateShellPairData(const Basis& bas);
 	void calculateOneElectron(const Basis& bas);
+	void calculateOverlapPair(const ShellPair* shlp);
 };
